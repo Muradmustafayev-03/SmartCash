@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='user',
+            model_name='purchase',
             name='FIN',
             field=models.CharField(default='FIN_UNKNOWN', max_length=7),
         ),

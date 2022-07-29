@@ -1,8 +1,7 @@
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 
 
-class User(models.Model):
+class Person(models.Model):
     FIN = models.CharField(verbose_name="Fin",max_length=7, default='FIN_UNKNOWN')
 
     def __str__(self):
@@ -28,7 +27,7 @@ class Product(models.Model):
         return self.title
 
 class Purchase(models.Model):
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(Person, on_delete=models.DO_NOTHING)
     store_name = models.CharField(max_length=50)
     store_address = models.CharField(max_length=150)
     datetime = models.DateTimeField()
