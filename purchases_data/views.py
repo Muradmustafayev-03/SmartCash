@@ -17,7 +17,6 @@ class PurchaseViewSet(viewsets.ModelViewSet):
 class BillViewSet(viewsets.ViewSet):
     
     def post(self,request):
-        
         return HttpResponse("succes")
 
     def get(self,request):
