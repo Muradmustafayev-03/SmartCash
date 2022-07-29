@@ -3,7 +3,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class User(models.Model):
-    FIN = models.CharField(max_length=7, default='FIN_UNKNOWN')
+    FIN = models.CharField(verbose_name="Fin",max_length=7, default='FIN_UNKNOWN')
 
     def __str__(self):
         return self.name + ' ' + self.surname
@@ -20,11 +20,11 @@ class Category(models.Model):
 class Product(models.Model):
     title = models.CharField(max_length=50)
     manufacturer = models.CharField(max_length=50, blank=True)
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True , default='')
     price = models.DecimalField(max_digits=15, decimal_places=2, blank=True)
     category = models.ManyToManyField(Category)
 
-    def __str__(self):
+    def __str__(self):  
         return self.title
 
 class Purchase(models.Model):
