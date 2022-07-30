@@ -4,8 +4,6 @@ from .models import Purchase
 from rest_framework import viewsets
 
 
-def home(request):
-    return render(request, "purchases_data/purchase.html")
 
 
 class PurchaseViewSet(viewsets.ModelViewSet):

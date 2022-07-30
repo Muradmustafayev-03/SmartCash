@@ -1,11 +1,15 @@
+from operator import mod
 from django.db import models
+from matplotlib.pyplot import title
 
 
 class Person(models.Model):
     FIN = models.CharField(verbose_name="Fin",max_length=7, default='FIN_UNKNOWN')
 
     def __str__(self):
-        return self.name + ' ' + self.surname
+        return  self.FIN
+
+
 
 
 class Category(models.Model):
@@ -45,5 +49,5 @@ class PurchaseUnit(models.Model):
     quantity = models.FloatField()
 
     def __str__(self):
-        return str(self.purchase) + '-' + str(self.product)
+        return str(self.product) + '-' + str(self.quantity)
 
