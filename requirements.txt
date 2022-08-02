@@ -2,4 +2,7 @@ Django~=4.0.6
 djangorestframework~=3.13.1
 requests_html
 datetime
+<<<<<<< HEAD
 RegEx
+=======
+>>>>>>> parent of b1ee2ee (Update requirements.txt)
