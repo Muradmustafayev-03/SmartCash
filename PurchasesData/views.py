@@ -6,7 +6,7 @@ from Parser.parser import parse_purchase
 
 
 def home(request):
-    return render(request, "purchases_data/purchase.html")
+    return render(request, "purchases_data/templates/purchase.html")
 
 
 class PurchaseViewSet(viewsets.ModelViewSet):
