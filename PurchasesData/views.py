@@ -1,8 +1,9 @@
 from django.shortcuts import render, HttpResponse
 from .serializer import PurchaseSerializer
-from .models import Purchase
+from .models import Purchase,User
 from rest_framework import viewsets
 from Parser.parser import parse_purchase , write_to_db
+from rest_framework.decorators import action
 
 
 def home(request):
@@ -10,8 +11,12 @@ def home(request):
 
 
 class PurchaseViewSet(viewsets.ModelViewSet):
-    queryset = Purchase.objects.all()
     serializer_class = PurchaseSerializer
+    
+    @action(detail=False, methods=['get'])
+    def get_queryset(self):
+        user = User.objects.select_related('purchases').all()
+        return Purchase.objects.filter(**self.request.data)
 
 
 class BillViewSet(viewsets.ViewSet):
@@ -23,4 +28,4 @@ class BillViewSet(viewsets.ViewSet):
 
     @staticmethod
     def get(request):
-        return HttpResponse("<h1>only for 'post' method </h1>")
+        return HttpResponse("<div style='width: 100%; height: 100%; display:flex;align-items: center; justify-content: center; font-size: 50px; color: black;'><p>only for POST method</p></div>")

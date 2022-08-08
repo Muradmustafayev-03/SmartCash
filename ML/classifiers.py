@@ -10,7 +10,7 @@ def is_manufacturer(store: Store):  # to be done
 
 
 def get_product_title(product: str, store: Store):  # to be done
-    return product
+    return product.name
 
 
 def get_manufacturer(product: str, store: Store):  # to be done
