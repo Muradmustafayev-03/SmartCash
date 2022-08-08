@@ -1,3 +1,4 @@
+import time
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium import webdriver
@@ -14,15 +15,16 @@ def get_content_from_e_kassa(fiscal_ID: str):
     :param fiscal_ID: Fiscal ID of the purchase
     :return: string that contains the electronic receipt data
     """
-    url = 'https://monitoring.e-kassa.gov.az/#/index?doc=' + fiscal_ID
+    url = f'https://monitoring.e-kassa.gov.az/#/index?doc={fiscal_ID}'
 
     options = Options()
     options.add_argument('--headless')
 
     driver = webdriver.Chrome(executable_path='Parser/Browsers/chromedriver.exe')
     driver.get(url)
+    time.sleep(20)
     content = driver.find_element(By.CSS_SELECTOR, '.MuiTypography-root.Document_wrapper__S3gZY').text
-    # driver.close()
+    driver.close()
 
     return content
 
