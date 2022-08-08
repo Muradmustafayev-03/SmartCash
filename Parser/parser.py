@@ -17,10 +17,12 @@ def get_content_from_e_kassa(fiscal_ID: str):
     """
     url = f'https://monitoring.e-kassa.gov.az/#/index?doc={fiscal_ID}'
 
-    options = Options()
+    options = webdriver.ChromeOptions()
     options.add_argument('--headless')
+    options.headless = True
 
-    driver = webdriver.Chrome(executable_path='Parser/Browsers/chromedriver.exe')
+    driver = webdriver.Chrome(executable_path='Parser/Browsers/chromedriver.exe',
+                              options=options)
     driver.get(url)
     time.sleep(20)
     content = driver.find_element(By.CSS_SELECTOR, '.MuiTypography-root.Document_wrapper__S3gZY').text
