@@ -85,7 +85,7 @@ def write_to_db(purchase_doc: PurchaseDoc):
 
     purchase = Purchase.objects.get_or_create(user=user, store=store, date=purchase_doc.date, time=purchase_doc.time,
                                               total_price=purchase_doc.total_price, discount=purchase_doc.discount,
-                                              cashless=purchase_doc.cashless, total_payed=purchase_doc.total_payed)
+                                              cashless=purchase_doc.cashless, total_payed=purchase_doc.total_payed)[0]
     purchase.save()
 
     for product_tuple in purchase_doc.products:
