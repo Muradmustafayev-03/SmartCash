@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse
 from .serializer import PurchaseSerializer
 from .models import Purchase,User
 from rest_framework import viewsets
-from Parser.parser import parse_purchase , write_to_db
+from Parser.parser import parse_purchase, write_to_db
 from rest_framework.decorators import action
 
 
@@ -22,10 +22,12 @@ class PurchaseViewSet(viewsets.ModelViewSet):
 class BillViewSet(viewsets.ViewSet):
     @staticmethod
     def post(request):
-        user_ifo = parse_purchase(request.data["user_FIN"], request.data["user_token"])
+        user_ifo = parse_purchase(request.data['user_FIN'], request.data['user_token'])
         write_to_db(user_ifo)
-        return HttpResponse("succes")
+        return HttpResponse('success')
 
     @staticmethod
     def get(request):
-        return HttpResponse("<div style='width: 100%; height: 100%; display:flex;align-items: center; justify-content: center; font-size: 50px; color: black;'><p>only for POST method</p></div>")
+        return HttpResponse("<div style='width: 100%; height: 100%; display:flex;align-items: center; "
+                            "justify-content: center; font-size: 50px; color: black;'>"
+                            "<p>only for POST method</p></div>")

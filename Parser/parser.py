@@ -1,5 +1,4 @@
 import time
-from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from PurchasesData.models import User, Purchase, Store, Product, PurchaseUnit
@@ -84,9 +83,9 @@ def write_to_db(purchase_doc: PurchaseDoc):
 
     store.save()
 
-    purchase = Purchase(user=user, store=store, date=purchase_doc.date, time=purchase_doc.time,
-                        total_price=purchase_doc.total_price, discount=purchase_doc.discount,
-                        cashless=purchase_doc.cashless, total_payed=purchase_doc.total_payed)
+    purchase = Purchase.objects.get_or_create(user=user, store=store, date=purchase_doc.date, time=purchase_doc.time,
+                                              total_price=purchase_doc.total_price, discount=purchase_doc.discount,
+                                              cashless=purchase_doc.cashless, total_payed=purchase_doc.total_payed)
     purchase.save()
 
     for product_tuple in purchase_doc.products:
