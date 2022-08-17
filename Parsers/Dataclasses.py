@@ -3,7 +3,7 @@ import datetime
 
 
 @dataclass
-class PurchaseDoc:
+class Purchase:
     """
         user_FIN: str FIN code of user that made the purchase / scanned the QR - code\n
         store_name: str\n

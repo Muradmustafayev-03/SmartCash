@@ -22,7 +22,7 @@
   <component name="PyNamespacePackagesService">
     <option name="namespacePackageFolders">
       <list>
-        <option value="$MODULE_DIR$/Parser" />
+        <option value="$MODULE_DIR$/Parsers" />
       </list>
     </option>
   </component>

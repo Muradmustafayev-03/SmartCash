@@ -1,8 +1,8 @@
 from django.shortcuts import render, HttpResponse
 from .serializer import PurchaseSerializer
-from .models import Purchase,User
+from .models import Purchase, User
 from rest_framework import viewsets
-from Parser.parser import parse_purchase, write_to_db
+from Parsers.e_kassa_parser import parse_purchase, write_to_db
 from rest_framework.decorators import action
 
 

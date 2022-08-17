@@ -30,10 +30,12 @@ class Store(models.Model):
 
 class Product(models.Model):
     title = models.CharField(max_length=50)
-    manufacturer = models.CharField(max_length=50, blank=True)
+    manufacturer = models.CharField(max_length=50, blank=True, null=True)
+    quantity = models.DecimalField(max_digits=17, decimal_places=3, blank=True, null=True)
+    quantity_marker = models.CharField(max_length=50, blank=True, null=True)
     description = models.TextField(blank=True)
-    price = models.DecimalField(max_digits=15, decimal_places=2, blank=True)
-    category = models.ManyToManyField(Category)
+    price = models.DecimalField(max_digits=17, decimal_places=2, blank=True)
+    categories = models.ManyToManyField(Category)
 
     def __str__(self):
         return self.title

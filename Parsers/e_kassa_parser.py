@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from PurchasesData.models import User, Purchase, Store, Product, PurchaseUnit
-from .PurchaseDoc import PurchaseDoc
+from .Dataclasses import Purchase
 from ML import classifiers
 import datetime
 import re
@@ -20,7 +20,7 @@ def get_content_from_e_kassa(fiscal_ID: str):
     options.add_argument('--headless')
     options.headless = True
 
-    driver = webdriver.Chrome(executable_path='Parser/Browsers/chromedriver.exe',
+    driver = webdriver.Chrome(executable_path='Parsers/Browsers/chromedriver.exe',
                               options=options)
     driver.get(url)
     time.sleep(3)
@@ -60,12 +60,12 @@ def parse_purchase(user_FIN: str, fiscal_ID: str):
 
     discount = total_price - total_payed
 
-    return PurchaseDoc(user_FIN=user_FIN, store_name=store_name, store_address=store_address,
-                       taxpayer_name=taxpayer_name, date=date, time=time, products=products, total_price=total_price,
-                       discount=discount, total_payed=total_payed, cashless=cashless)
+    return Purchase(user_FIN=user_FIN, store_name=store_name, store_address=store_address,
+                    taxpayer_name=taxpayer_name, date=date, time=time, products=products, total_price=total_price,
+                    discount=discount, total_payed=total_payed, cashless=cashless)
 
 
-def write_to_db(purchase_doc: PurchaseDoc):
+def write_to_db(purchase_doc: Purchase):
     """
     Writes data from a PurchaseDoc into the database
     :param purchase_doc: PurchaseDoc that contains data to be saved in the database

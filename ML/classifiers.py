@@ -9,16 +9,16 @@ def is_manufacturer(store: Store):  # to be done
     return False
 
 
-def get_product_title(product: str, store: Store):  # to be done
-    return product.name
+def get_product_title(title_forms: list, store: Store):  # to be done
+    return title_forms[0]
 
 
-def get_manufacturer(product: str, store: Store):  # to be done
+def get_manufacturer(title_forms: list, store: Store):  # to be done
     if store.is_manufacturer:
         return store.name
     else:
-        return product
+        return title_forms[0]
 
 
-def get_category(product: Product):  # to be done
+def get_categories(product: Product):  # to be done
     return Category.objects.get_or_create(title='undefined')[0]
