@@ -75,8 +75,8 @@ def get_product_and_categories(title_from_receipt: str, price: float, store: Sto
     site_title, categories, description = get_info_from_url(get_url_from_title(title_from_receipt))
     site_title = get_title_and_quantity(site_title)[0]
 
-    title = get_product_title([title_from_receipt, site_title], store)
-    manufacturer = get_manufacturer([title_from_receipt, site_title, title], store)
+    title = get_product_title(site_title, store)
+    manufacturer = get_manufacturer(site_title, store)
 
     product = Product.objects.get_or_create(title=title, manufacturer=manufacturer, quantity=quantity,
                                             quantity_marker=quantity_marker, description=description, price=price)[0]
