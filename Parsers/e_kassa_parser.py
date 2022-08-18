@@ -65,7 +65,7 @@ def parse_purchase(user_FIN: str, fiscal_ID: str):
                     discount=discount, total_payed=total_payed, cashless=cashless)
 
 
-def write_to_db(purchase_doc: Purchase):
+def write_to_db(purchase_doc: Purchase):  # to review & rewrite
     """
     Writes data from a PurchaseDoc into the database
     :param purchase_doc: PurchaseDoc that contains data to be saved in the database
@@ -94,7 +94,7 @@ def write_to_db(purchase_doc: Purchase):
         product = Product.objects.get_or_create(title=title, manufacturer=manufacturer, price=product_tuple[2])[0]
 
         if product.category is None:
-            product.category = classifiers.get_category(product)
+            product.category = classifiers.get_categories(product)
 
         product.save()
 

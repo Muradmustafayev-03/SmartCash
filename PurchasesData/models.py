@@ -33,8 +33,8 @@ class Product(models.Model):
     manufacturer = models.CharField(max_length=50, blank=True, null=True)
     quantity = models.DecimalField(max_digits=17, decimal_places=3, blank=True, null=True)
     quantity_marker = models.CharField(max_length=50, blank=True, null=True)
-    description = models.TextField(blank=True)
-    price = models.DecimalField(max_digits=17, decimal_places=2, blank=True)
+    description = models.TextField(blank=True, null=True)
+    price = models.DecimalField(max_digits=17, decimal_places=2, blank=True, null=True)
     categories = models.ManyToManyField(Category)
 
     def __str__(self):
