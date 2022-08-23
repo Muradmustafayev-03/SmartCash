@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup as bs
 import os
+from PurchasesData.models import Category, Product, Store
+from .extract_title import get_title_and_quantity
+from ML.classifiers import get_product_title, get_manufacturer
 
 
 class BazarstoreParser:
@@ -17,6 +20,10 @@ class BazarstoreParser:
                     classes.append(element.find("span").text)
             except AttributeError:
                 pass
+            except Exception as e:
+                print(e)
+
+        classes.remove('Öz Məhsullarımız')
 
         return classes[:-5]
 
@@ -26,6 +33,8 @@ class BazarstoreParser:
             try:
                 for i in self.soup.find("li", {"class": f"menu-item{num}"}).find_all("a"):
                     list_of_links.append(i.get("href"))
+            except AttributeError:
+                pass
             except Exception as e:
                 print(e)
         return list_of_links
@@ -51,6 +60,8 @@ class BazarstoreParser:
             try:
                 i = int(i)
                 pagination_numbers_as_int.append(i)
+            except ValueError:
+                pass
             except Exception as e:
                 print(e)
 
@@ -85,8 +96,34 @@ class BazarstoreParser:
         for cls, link in link_class_dict.items():
             i += 1  #
             os.system('cls')
-            print(f"{i}/498")  #
+            print(f"{i}/492")  #
             if link:
                 link_product_dict[cls] = self.pars_products_from_link(link)
 
         return link_product_dict
+
+
+def write_to_db():
+    parser = BazarstoreParser()
+    store = Store.objects.get_or_create(name='Bazarstore',
+                                        address='Bakı şəhəri, Binəqədi rayonu, Dərnəgül qəsəbəsi 108',
+                                        taxpayer_name='Bazarstore MMC', type='supermarket', is_manufacturer=False)[0]
+    store.save()
+    categories_products = parser.get_product_and_its_class()
+
+    for category_name in categories_products.keys():
+        category = Category.objects.get_or_create(title=category_name)[0]
+        category.save()
+
+        for product_title in categories_products[category_name]:
+            if type(product_title) == list:
+                product_title = product_title[0]
+
+            product_title = get_title_and_quantity(product_title)[0]
+            manufacturer = get_manufacturer(product_title, store)
+            product_title = get_product_title(product_title, store)
+
+            product = Product.objects.get_or_create(title=product_title, manufacturer=manufacturer,
+                                                    quantity=1, quantity_marker='', description='', price=0)[0]
+            product.save()
+            product.categories.add(category)
