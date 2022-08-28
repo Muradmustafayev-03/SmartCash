@@ -87,7 +87,8 @@ class Product(models.Model):
         blank=True,
         null=True)
 
-    categories = models.ManyToManyField(Category)
+    categories = models.ManyToManyField(Category,
+                                        default=None)
 
     order = models.PositiveIntegerField(
         default=0,

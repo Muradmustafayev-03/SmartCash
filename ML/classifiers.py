@@ -4,11 +4,6 @@ import nltk
 from sklearn.svm import SVC
 
 
-# products_list = Product.objects.all()[30:]
-# product_dict = {product: product.categories.all() for product in products_list}
-# print(product_dict)
-
-
 def store_type(store: Store):  # to be finished
     if 'store' in (store.name + store.taxpayer_name).lower() or 'market' in (store.name + store.taxpayer_name).lower():
         return 'supermarket'
