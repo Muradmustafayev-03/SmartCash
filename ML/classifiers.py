@@ -1,4 +1,12 @@
 from PurchasesData.models import Store, Product, Category
+import numpy as np
+import nltk
+from sklearn.svm import SVC
+
+
+# products_list = Product.objects.all()[30:]
+# product_dict = {product: product.categories.all() for product in products_list}
+# print(product_dict)
 
 
 def store_type(store: Store):  # to be finished
@@ -6,7 +14,7 @@ def store_type(store: Store):  # to be finished
         return 'supermarket'
     if 'cafe' in (store.name + store.taxpayer_name).lower() or 'kafe' in (store.name + store.taxpayer_name).lower():
         return 'cafe'
-    if 'restaurant' in (store.name + store.taxpayer_name).lower()\
+    if 'restaurant' in (store.name + store.taxpayer_name).lower() \
             or 'restoran' in (store.name + store.taxpayer_name).lower():
         return 'restaurant'
     return ''
