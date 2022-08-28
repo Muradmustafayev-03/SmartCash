@@ -2,7 +2,7 @@ from django.contrib import admin
 from adminsortable2.admin import SortableAdminMixin
 from .models import User, Category, Store, Product, Purchase, PurchaseUnit
 
-admin.register(User)
+admin.site.register(User)
 admin.site.register(Category)
 
 
