@@ -3,7 +3,7 @@ from sklearn import metrics
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from Parsers.extract_title import quantity_markers
-from dataset_builder import SimpleDatasetBuilder
+from .dataset_builder import SimpleDatasetBuilder
 
 
 class Classifier:
@@ -27,9 +27,9 @@ class Classifier:
     def test(self):
         y_pred = self.predict()
 
-        precision = metrics.precision_score(self.y_test, y_pred)
-        recall = metrics.recall_score(self.y_test, y_pred)
-        f1 = metrics.f1_score(self.y_test, y_pred)
+        precision = metrics.precision_score(self.y_test, y_pred, average='micro')
+        recall = metrics.recall_score(self.y_test, y_pred, average='micro')
+        f1 = metrics.f1_score(self.y_test, y_pred, average='micro')
 
         return precision, recall, f1
 

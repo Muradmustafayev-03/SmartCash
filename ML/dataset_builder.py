@@ -19,11 +19,11 @@ class DatasetBuilder:
         pivot = int(0.8 * size)
 
         for i in range(0, pivot):
-            x_train.append(dataset[i][:3])
-            y_train.append(dataset[i][3:])
+            x_train.append(dataset[i][0])
+            y_train.append(dataset[i][0])
         for i in range(pivot, size):
-            x_test.append(dataset[i][:3])
-            y_test.append(dataset[i][3:])
+            x_test.append(dataset[i][1])
+            y_test.append(dataset[i][1])
 
         return x_train, x_test, y_train, y_test
 
@@ -40,8 +40,8 @@ class SimpleDatasetBuilder(DatasetBuilder):
         for product in self.products_list:
             categories = product.categories.all()
 
-            dataset.append((product.title, product.manufacturer, product.description,
-                            categories[len(categories)-1].title))
+            dataset.append([f'{product.title}, {product.manufacturer}, {product.description}',
+                           categories[len(categories)- 1].title])
         return dataset
 
     def save_dataset(self):
@@ -73,15 +73,16 @@ class ComplexDatasetBuilder(DatasetBuilder):
         dataset = []
 
         for product in self.products_list:
-            row = [product.title, product.manufacturer, product.description]
+            row_x = [f'{product.title}, {product.manufacturer}, {product.description}']
+            row_y = []
 
             for category in self.categories_list:
                 if category in product.categories.all():
-                    row.append(1)
+                    row_y.append(1)
                 else:
-                    row.append(0)
+                    row_y.append(0)
 
-            dataset.append(tuple(row))
+            dataset.append([row_x, row_y])
 
         return dataset
 
