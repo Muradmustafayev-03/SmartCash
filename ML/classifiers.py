@@ -1,6 +1,5 @@
 from PurchasesData.models import Store, Product, Category
 import numpy as np
-import nltk
 from sklearn.svm import SVC
 
 
