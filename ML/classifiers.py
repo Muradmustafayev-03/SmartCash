@@ -1,6 +1,4 @@
 from PurchasesData.models import Store, Product, Category
-import numpy as np
-from sklearn.svm import SVC
 
 
 def store_type(store: Store):  # to be finished
