@@ -1,7 +1,7 @@
 import pickle
 from sklearn import metrics
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.naive_bayes import MultinomialNB
+from sklearn.svm import LinearSVC
 from Parsers.extract_title import quantity_markers
 from .dataset_builder import SimpleDatasetBuilder
 
@@ -13,12 +13,13 @@ class Classifier:
         self.vectorizer = CountVectorizer(stop_words=quantity_markers,
                                           ngram_range=(1, 3),
                                           analyzer='word')
-        self.model = self.train()
+        self.model = LinearSVC()
 
     def train(self):
         x_train_vectorized = self.vectorizer.fit_transform(self.x_train)
-        nb_classifier = MultinomialNB().fit(x_train_vectorized, self.y_train)
-        return nb_classifier
+        model = self.model.fit(x_train_vectorized, self.y_train)
+        self.model = model
+        return model
 
     def predict(self):
         x_test_vectorized = self.vectorizer.transform(self.x_test)

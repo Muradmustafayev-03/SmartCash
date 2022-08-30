@@ -26,6 +26,7 @@
     <option name="namespacePackageFolders">
       <list>
         <option value="$MODULE_DIR$/Parsers" />
+        <option value="$MODULE_DIR$/ML" />
       </list>
     </option>
   </component>
