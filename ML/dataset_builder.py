@@ -77,7 +77,7 @@ class ComplexDatasetBuilder(DatasetBuilder):
         dataset = []
 
         for product in self.products_list:
-            row_x = [f'{product.title}, {product.manufacturer}, {product.description}']
+            row_x = f'{product.title}, {product.manufacturer}, {product.description}'
             row_y = []
 
             for category in self.categories_list:
