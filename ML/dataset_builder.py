@@ -5,7 +5,8 @@ import random
 class DatasetBuilder:
     def __init__(self):
         self.products_list = self.get_products_list()
-        self.dataset = self.get_dataset()
+        self.dataset = self.get_dataset_from_db()
+        self.path = 'ML/dataset/'
 
     def get_products_list(self):
         self.products_list = Product.objects.exclude(categories=None)
@@ -28,11 +29,20 @@ class DatasetBuilder:
         return x_train, x_test, y_train, y_test
 
     def get_dataset(self):
+        pass
+
+    def get_dataset_from_db(self):
         return []
+
+    def get_dataset_from_file(self, filename):
+        dataset = []
+        with open(self.path + filename + 'csv', 'r', encoding='utf-8') as file:
+            line = file.read().split(',')
+            dataset.append([', '.join(line[:3]), line[3:]])
 
 
 class SimpleDatasetBuilder(DatasetBuilder):
-    def get_dataset(self):
+    def get_dataset_from_db(self):
         """
         :return: dataset list
         """
@@ -41,22 +51,20 @@ class SimpleDatasetBuilder(DatasetBuilder):
             categories = product.categories.all()
 
             dataset.append([f'{product.title}, {product.manufacturer}, {product.description}',
-                            categories[len(categories) - 1].title])
+                            [categories[len(categories) - 1].title]])
 
         random.shuffle(dataset)
-        self.dataset = dataset
         return dataset
 
-    def save_dataset(self):
+    def save_dataset(self, filename: str):
         """
         writes the dataset into csv file
         """
-        dataset = self.get_dataset()
 
-        with open('simple_dataset.csv', 'w', encoding='utf-8') as file:
+        with open(self.path + filename + 'csv', 'w', encoding='utf-8') as file:
             # first row is label
             file.write('Title, Manufacturer, Description, Main Category')
-            for entry in dataset:
+            for entry in self.dataset:
                 file.write(f'{entry[0]}, {entry[1]}, {entry[2]}, {entry[3]}\n')
 
 
@@ -70,7 +78,7 @@ class ComplexDatasetBuilder(DatasetBuilder):
     def get_categories_list(self):
         self.categories_list = Category.objects.all()
 
-    def get_dataset(self):
+    def get_dataset_from_db(self):
         """
         :return: dataset list
         """
@@ -92,11 +100,11 @@ class ComplexDatasetBuilder(DatasetBuilder):
         self.dataset = dataset
         return dataset
 
-    def save_dataset(self):
+    def save_dataset(self, filename: str):
         """
         writes dataset into csv file
         """
-        with open('complex_dataset.csv', 'w', encoding='utf-8') as file:
+        with open(self.path + filename + 'csv', 'w', encoding='utf-8') as file:
             # first row as label
             file.write('Title, Manufacturer, Description')
             for category in self.categories_list:

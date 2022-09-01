@@ -69,7 +69,7 @@ class BazarstoreParser:
             return None
         return max(pagination_numbers_as_int)
 
-    def pars_products_from_link(self, link):
+    def parse_products_from_link(self, link):
         page = requests.get(link)
         page_soup = bs(page.text, 'html.parser')
         pagination = self.get_count_of_pages_or_NONE(page_soup)
@@ -98,7 +98,7 @@ class BazarstoreParser:
             os.system('cls')
             print(f"{i}/492")  #
             if link:
-                link_product_dict[cls] = self.pars_products_from_link(link)
+                link_product_dict[cls] = self.parse_products_from_link(link)
 
         return link_product_dict
 
