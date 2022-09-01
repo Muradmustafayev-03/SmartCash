@@ -7,9 +7,9 @@ from .dataset_builder import SimpleDatasetBuilder
 
 
 class Classifier:
-    def __init__(self):
+    def __init__(self, split):
         self.dataset_builder = SimpleDatasetBuilder()
-        self.x_train, self.x_test, self.y_train, self.y_test = self.dataset_builder.get_split()
+        self.x_train, self.x_test, self.y_train, self.y_test = self.dataset_builder.get_split(split)
         self.vectorizer = CountVectorizer(stop_words=quantity_markers,
                                           ngram_range=(1, 3),
                                           analyzer='word')

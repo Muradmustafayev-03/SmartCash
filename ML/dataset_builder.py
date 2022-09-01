@@ -12,12 +12,14 @@ class DatasetBuilder:
         self.products_list = Product.objects.exclude(categories=None)
         return Product.objects.exclude(categories=None)
 
-    def get_split(self):
+    def get_split(self, split=0.8):
+        assert 0 < split < 1
+
         size = len(self.dataset)
 
         x_train, x_test, y_train, y_test = [], [], [], []
 
-        pivot = int(0.8 * size)
+        pivot = int(split * size)
 
         for i in range(0, pivot):
             x_train.append(self.dataset[i][0])
