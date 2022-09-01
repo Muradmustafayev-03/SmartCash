@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from ML.category_classifier import Classifier
+from ML.category_classifier import SimpleClassifier
 
-c = Classifier()
+c = SimpleClassifier()
 c.train()
 
 

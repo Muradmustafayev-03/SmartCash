@@ -6,10 +6,12 @@ from Parsers.extract_title import quantity_markers
 from .dataset_builder import SimpleDatasetBuilder
 
 
-class Classifier:
+class SimpleClassifier:
     def __init__(self, split=0.8):
         self.dataset_builder = SimpleDatasetBuilder()
         self.x_train, self.x_test, self.y_train, self.y_test = self.dataset_builder.get_split(split)
+        self.y_train = [y[0] for y in self.y_train]
+        self.y_test = [y[0] for y in self.y_test]
         self.vectorizer = CountVectorizer(stop_words=quantity_markers,
                                           ngram_range=(1, 3),
                                           analyzer='word')
@@ -28,7 +30,7 @@ class Classifier:
     def test(self):
         y_pred = self.predict()
 
-        precision = metrics.precision_score(self.y_train, y_pred, average='micro')
+        precision = metrics.precision_score(self.y_test, y_pred, average='micro')
         recall = metrics.recall_score(self.y_test, y_pred, average='micro')
         f1 = metrics.f1_score(self.y_test, y_pred, average='micro')
 
