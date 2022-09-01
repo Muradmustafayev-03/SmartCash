@@ -5,8 +5,8 @@ import random
 class DatasetBuilder:
     def __init__(self):
         self.products_list = self.get_products_list()
-        self.dataset = self.get_dataset()
         self.path = 'ML/dataset/'
+        self.dataset = self.get_dataset()
 
     def get_products_list(self):
         self.products_list = Product.objects.exclude(categories=None)

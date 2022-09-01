@@ -7,7 +7,7 @@ from .dataset_builder import SimpleDatasetBuilder
 
 
 class Classifier:
-    def __init__(self, split):
+    def __init__(self, split=0.8):
         self.dataset_builder = SimpleDatasetBuilder()
         self.x_train, self.x_test, self.y_train, self.y_test = self.dataset_builder.get_split(split)
         self.vectorizer = CountVectorizer(stop_words=quantity_markers,
@@ -28,7 +28,7 @@ class Classifier:
     def test(self):
         y_pred = self.predict()
 
-        precision = metrics.precision_score(self.y_test, y_pred, average='micro')
+        precision = metrics.precision_score(self.y_train, y_pred, average='micro')
         recall = metrics.recall_score(self.y_test, y_pred, average='micro')
         f1 = metrics.f1_score(self.y_test, y_pred, average='micro')
 
