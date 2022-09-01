@@ -5,7 +5,7 @@ import random
 class DatasetBuilder:
     def __init__(self):
         self.products_list = self.get_products_list()
-        self.dataset = self.get_dataset_from_db()
+        self.dataset = self.get_dataset()
         self.path = 'ML/dataset/'
 
     def get_products_list(self):
@@ -28,8 +28,15 @@ class DatasetBuilder:
 
         return x_train, x_test, y_train, y_test
 
-    def get_dataset(self):
-        pass
+    def get_dataset(self, filename=''):
+        try:
+            dataset = self.get_dataset_from_file(filename)
+        except IOError:
+            dataset = self.get_dataset_from_db()
+        except Exception as e:
+            print(e)
+            dataset = self.get_dataset_from_db()
+        return dataset
 
     def get_dataset_from_db(self):
         return []
@@ -37,8 +44,9 @@ class DatasetBuilder:
     def get_dataset_from_file(self, filename):
         dataset = []
         with open(self.path + filename + 'csv', 'r', encoding='utf-8') as file:
-            line = file.read().split(',')
-            dataset.append([', '.join(line[:3]), line[3:]])
+            for line in file:
+                dataset.append([', '.join(line.split(',')[:3]), line.split(',')[3:]])
+        return dataset
 
 
 class SimpleDatasetBuilder(DatasetBuilder):
