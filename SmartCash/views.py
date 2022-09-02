@@ -2,9 +2,8 @@ from django.shortcuts import render
 from ML.category_classifier import SimpleClassifier
 
 c = SimpleClassifier()
-c.train()
 
 
 def home(request):
-    print(c.test())
+    print(c.avg_precision())
     return render(request, r"purchase.html")
