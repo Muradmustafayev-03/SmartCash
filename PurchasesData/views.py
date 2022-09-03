@@ -22,8 +22,8 @@ class PurchaseViewSet(viewsets.ModelViewSet):
 class BillViewSet(viewsets.ViewSet):
     @staticmethod
     def post(request):
-        user_ifo = parse_purchase(request.data['user_FIN'], request.data['user_token'])
-        write_to_db(user_ifo)
+        purchase_info = parse_purchase(request.data['user_FIN'], request.data['user_token'])
+        write_to_db(purchase_info)
         return HttpResponse('success')
 
     @staticmethod
