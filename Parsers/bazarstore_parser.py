@@ -1,10 +1,10 @@
 import requests
 from bs4 import BeautifulSoup as bs
-import os
-from  bazarstoreDoc import ProductUnit
-# from PurchasesData.models import Category, Product, Store
-# from .extract_title import get_title_and_quantity
-# from ML.classifiers import get_product_title, get_manufacturer
+from ML.classifiers import get_manufacturer, get_product_title
+from .extract_title import get_title_and_quantity
+from PurchasesData.models import Store, Category, Product
+from bazarstoreDoc import ProductUnit
+
 
 class BazarstoreParser:
     soup = bs(requests.get('https://bazarstore.az/').text, 'html.parser')
@@ -15,8 +15,8 @@ class BazarstoreParser:
     @staticmethod
     def get_description_by_link(link):
         soup = bs(requests.get(link).text, 'html.parser')
-        return (str(soup.find("div",{"class":"product-description"}).text).strip())
-        
+        return str(soup.find("div", {"class": "product-description"}).text).strip()
+
     def get_class_child_name_as_list(self):
         classes = []
         for num in range(20):
@@ -46,13 +46,13 @@ class BazarstoreParser:
 
     def get_every_product_from_page(self, page_soup):
         dirty_titles = page_soup.find_all("h5", {"class": "product-title"})
-        
+
         clear_titles = []
         for i in dirty_titles:
             name = i.text
             link = i.find("a").get("href")
             description = self.get_description_by_link(link)
-            clear_titles.append(ProductUnit(name,link,description))
+            clear_titles.append(ProductUnit(name, link, description))
 
         return clear_titles
 
@@ -136,6 +136,6 @@ def write_to_db():
             product.save()
             product.categories.add(category)
 
+
 if __name__ == "__main__":
     BazarstoreParser().get_product_and_its_class()
-    
