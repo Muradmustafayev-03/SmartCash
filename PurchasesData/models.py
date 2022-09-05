@@ -24,7 +24,7 @@ class User(models.Model):
 class Category(models.Model):
     title = models.CharField(
         verbose_name='Category Title',
-        max_length=50,
+        max_length=100,
         unique=True)
 
     description = models.TextField(
@@ -45,17 +45,17 @@ class Category(models.Model):
 
 class Store(models.Model):
     name = models.CharField(
-        max_length=50)
+        max_length=100)
 
     address = models.CharField(
-        max_length=150)
+        max_length=200)
 
     taxpayer_name = models.CharField(
-        max_length=50,
+        max_length=100,
         unique=True)
 
     type = models.CharField(
-        max_length=50,
+        max_length=100,
         default=None,
         null=True)
 
@@ -77,21 +77,21 @@ class Store(models.Model):
 
 class Product(models.Model):
     title = models.CharField(
-        max_length=50)
+        max_length=100)
 
     manufacturer = models.CharField(
-        max_length=50,
+        max_length=100,
         blank=True,
         null=True)
 
     quantity = models.DecimalField(
-        max_digits=17,
+        max_digits=20,
         decimal_places=3,
         blank=True,
         null=True)
 
     quantity_marker = models.CharField(
-        max_length=50,
+        max_length=100,
         blank=True,
         null=True)
 
@@ -100,7 +100,7 @@ class Product(models.Model):
         null=True)
 
     price = models.DecimalField(
-        max_digits=17,
+        max_digits=20,
         decimal_places=2,
         blank=True,
         null=True)
@@ -133,15 +133,15 @@ class Purchase(models.Model):
     time = models.TimeField()
 
     total_price = models.DecimalField(
-        max_digits=15,
+        max_digits=20,
         decimal_places=2)
 
     discount = models.DecimalField(
-        max_digits=15,
+        max_digits=20,
         decimal_places=2)
 
     total_payed = models.DecimalField(
-        max_digits=15,
+        max_digits=20,
         decimal_places=2)
 
     cashless = models.BooleanField()
