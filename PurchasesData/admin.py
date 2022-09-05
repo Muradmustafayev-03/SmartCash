@@ -2,8 +2,17 @@ from django.contrib import admin
 from adminsortable2.admin import SortableAdminMixin
 from .models import User, Category, Store, Product, Purchase, PurchaseUnit
 
-admin.site.register(User)
-admin.site.register(Category)
+
+@admin.register(User)
+class SortableUserAdmin(SortableAdminMixin, admin.ModelAdmin):
+    ordering = []
+    list_display = ['FIN']
+
+
+@admin.register(Category)
+class SortableCategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
+    ordering = []
+    list_display = ['title', 'description']
 
 
 @admin.register(Store)

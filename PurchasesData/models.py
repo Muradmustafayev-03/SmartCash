@@ -8,6 +8,15 @@ class User(models.Model):
         default='FIN_UNKNOWN',
         unique=True)
 
+    order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+    )
+
+    class Meta:
+        ordering = ['order']
+
     def __str__(self):
         return self.FIN
 
@@ -20,6 +29,15 @@ class Category(models.Model):
 
     description = models.TextField(
         blank=True)
+
+    order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+    )
+
+    class Meta:
+        ordering = ['order']
 
     def __str__(self):
         return self.title
