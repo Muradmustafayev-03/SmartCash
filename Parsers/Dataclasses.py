@@ -43,3 +43,16 @@ class Purchase:
                f'Discount: {self.discount}\n' \
                f'Total payed: {self.total_payed}\n' \
                f'Payed cashless: {self.cashless}'
+
+
+@dataclass
+class ProductUnit:
+    name: str
+    link: str
+    description: str = None
+
+    def __str__(self) -> str:
+        return self.name
+
+    def __repr__(self) -> str:
+        return self.name

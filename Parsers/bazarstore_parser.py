@@ -1,9 +1,9 @@
 import requests
 from bs4 import BeautifulSoup as bs
 from ML.classifiers import get_manufacturer, get_product_title
-from .extract_title import get_title_and_quantity
 from PurchasesData.models import Store, Category, Product
-from bazarstoreDoc import ProductUnit
+from .Dataclasses import ProductUnit
+from .extract_title import get_title_and_quantity
 
 
 class BazarstoreParser:
