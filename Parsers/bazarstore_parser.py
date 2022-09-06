@@ -123,11 +123,11 @@ def write_to_db():
         category = Category.objects.get_or_create(title=category_name)[0]
         category.save()
 
-        for product_title in categories_products[category_name]:
-            if type(product_title) == list:
-                product_title = product_title[0]
+        for product in categories_products[category_name]:
+            if type(product) == list:
+                product = product[0]
 
-            product_title = get_title_and_quantity(product_title)[0]
+            product_title = get_title_and_quantity(product.name)[0]
             manufacturer = get_manufacturer(product_title, store)
             product_title = get_product_title(product_title, store)
 
