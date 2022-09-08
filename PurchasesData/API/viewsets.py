@@ -1,13 +1,9 @@
-from django.shortcuts import render, HttpResponse
-from .serializer import PurchaseSerializer
-from .models import Purchase, User
+from django.shortcuts import HttpResponse
+from PurchasesData.API.serializers import PurchaseSerializer
+from PurchasesData.models import Purchase, User
 from rest_framework import viewsets
 from Parsers.e_kassa_parser import parse_purchase, write_to_db
 from rest_framework.decorators import action
-
-
-def home(request):
-    return render(request, 'purchase.html')
 
 
 class PurchaseViewSet(viewsets.ModelViewSet):

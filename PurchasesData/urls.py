@@ -1,9 +1,9 @@
 from django.urls import path
 from rest_framework import routers
-from .views import PurchaseViewSet, BillViewSet
+from PurchasesData.API.viewsets import PurchaseViewSet, BillViewSet
 
 router = routers.DefaultRouter()
-router.register('purchases', PurchaseViewSet , basename='purchases')
+router.register('purchases', PurchaseViewSet, basename='purchases')
 
 urlpatterns = [
                   path('token/', BillViewSet.as_view({'post': 'post', 'get': 'get'}))
