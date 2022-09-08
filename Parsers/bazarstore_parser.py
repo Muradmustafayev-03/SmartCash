@@ -8,7 +8,7 @@ from .extract_title import get_title_and_quantity
 
 class BazarstoreParser:
     soup = bs(requests.get('https://bazarstore.az/').text, 'html.parser')
-    categories_products_dict = {}
+    products = {}
 
     def get_class_head_name_as_list(self, num):
         return self.soup.find("li", {"class": f"menu-item{num}"}).find("div", {"class": "col"}).find("span").text
@@ -109,9 +109,9 @@ class BazarstoreParser:
             # os.system('cls')
             print(f"{i}/492")  #
             if link:
-                self.categories_products_dict[cls] = self.parse_products_from_link(link)
+                self.products[cls] = self.parse_products_from_link(link)
 
-        return self.categories_products_dict
+        return self.products
 
     def write_to_db(self):
         store = Store.objects.get_or_create(name='Bazarstore',
@@ -121,12 +121,12 @@ class BazarstoreParser:
                                             is_manufacturer=False)[0]
         store.save()
 
-        for category_name in self.categories_products_dict.keys():
+        for category_name in self.products.keys():
             print(category_name)
             category = Category.objects.get_or_create(title=category_name)[0]
             category.save()
 
-            for product in self.categories_products_dict[category_name]:
+            for product in self.products[category_name]:
                 if type(product) == list:
                     product = product[0]
 
