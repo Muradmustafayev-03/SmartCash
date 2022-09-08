@@ -8,6 +8,7 @@ from .extract_title import get_title_and_quantity
 
 class BazarstoreParser:
     soup = bs(requests.get('https://bazarstore.az/').text, 'html.parser')
+    categories_products_dict = {}
 
     def get_class_head_name_as_list(self, num):
         return self.soup.find("li", {"class": f"menu-item{num}"}).find("div", {"class": "col"}).find("span").text
@@ -15,7 +16,10 @@ class BazarstoreParser:
     @staticmethod
     def get_description_by_link(link):
         soup = bs(requests.get(link).text, 'html.parser')
-        return str(soup.find("div", {"class": "product-description"}).text).strip()
+        try:
+            return str(soup.find("div", {"class": "product-description"}).text).strip()
+        except AttributeError:
+            return ''
 
     def get_class_child_name_as_list(self):
         classes = []
@@ -99,43 +103,48 @@ class BazarstoreParser:
 
     def get_product_and_its_class(self):
         link_class_dict = self.get_classes_and_urls_as_dict()
-        link_product_dict = {}
         i = 0  #
         for cls, link in link_class_dict.items():
             i += 1  #
             # os.system('cls')
             print(f"{i}/492")  #
             if link:
-                link_product_dict[cls] = self.parse_products_from_link(link)
+                self.categories_products_dict[cls] = self.parse_products_from_link(link)
 
-        return link_product_dict
+        return self.categories_products_dict
 
+    def write_to_db(self):
+        store = Store.objects.get_or_create(name='Bazarstore',
+                                            address='Bakı şəhəri, Binəqədi rayonu, Dərnəgül qəsəbəsi 108',
+                                            taxpayer_name='Bazarstore MMC',
+                                            type='supermarket',
+                                            is_manufacturer=False)[0]
+        store.save()
 
-def write_to_db():
-    parser = BazarstoreParser()
-    store = Store.objects.get_or_create(name='Bazarstore',
-                                        address='Bakı şəhəri, Binəqədi rayonu, Dərnəgül qəsəbəsi 108',
-                                        taxpayer_name='Bazarstore MMC', type='supermarket', is_manufacturer=False)[0]
-    store.save()
-    categories_products = parser.get_product_and_its_class()
+        for category_name in self.categories_products_dict.keys():
+            print(category_name)
+            category = Category.objects.get_or_create(title=category_name)[0]
+            category.save()
 
-    for category_name in categories_products.keys():
-        category = Category.objects.get_or_create(title=category_name)[0]
-        category.save()
+            for product in self.categories_products_dict[category_name]:
+                if type(product) == list:
+                    product = product[0]
 
-        for product in categories_products[category_name]:
-            if type(product) == list:
-                product = product[0]
+                product_title = get_title_and_quantity(product.name)[0]
+                manufacturer = get_manufacturer(product_title, store)
+                product_title = get_product_title(product_title, store)
 
-            product_title = get_title_and_quantity(product.name)[0]
-            manufacturer = get_manufacturer(product_title, store)
-            product_title = get_product_title(product_title, store)
+                product = Product.objects.get_or_create(title=product_title, manufacturer=manufacturer,
+                                                        quantity=1, quantity_marker='', description='', price=0)[0]
+                product.save()
+                product.categories.add(category)
 
-            product = Product.objects.get_or_create(title=product_title, manufacturer=manufacturer,
-                                                    quantity=1, quantity_marker='', description='', price=0)[0]
-            product.save()
-            product.categories.add(category)
+        print('finished writing to database')
+
+    def get_and_save_products(self):
+        self.get_product_and_its_class()
+        self.write_to_db()
 
 
 if __name__ == "__main__":
-    BazarstoreParser().get_product_and_its_class()
+    BazarstoreParser().get_and_save_products()
