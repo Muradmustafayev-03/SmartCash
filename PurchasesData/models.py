@@ -3,6 +3,7 @@ from django.db import models
 
 class User(models.Model):
     FIN = models.CharField(
+        primary_key=True,
         verbose_name='Fərdi İdentifikasiya Nömrəsi (FİN)',
         max_length=7,
         default='FIN_UNKNOWN',
