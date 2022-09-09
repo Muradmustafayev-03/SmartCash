@@ -1,5 +1,4 @@
 import time
-
 import requests
 from bs4 import BeautifulSoup as bs
 from ML.classifiers import get_manufacturer, get_product_title
