@@ -1,3 +1,4 @@
+import re
 import time
 import requests
 from bs4 import BeautifulSoup as bs
@@ -18,7 +19,8 @@ class BazarstoreParser:
     def get_price_by_link(link):
         soup = bs(requests.get(link).text, 'html.parser')
         try:
-            return float(soup.find("span", {"class": "bs-price"}).text.replace('₼ ', ''))
+            price = re.findall(r'(\d+\.\d*)', soup.find("span", {"class": "bs-price"}).text.replace(',', '.'))[0]
+            return float(price)
         except AttributeError:
             return 0
 
