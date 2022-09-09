@@ -4,17 +4,22 @@ from PurchasesData.models import Purchase, User
 from rest_framework import viewsets
 from Parsers.e_kassa_parser import parse_purchase, write_to_db
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 'page_size'
+    max_page_size = 20
 
 class PurchaseViewSet(viewsets.ModelViewSet):
     serializer_class = PurchaseSerializer
+    pagination_class = LargeResultsSetPagination
     
     @action(detail=False, methods=['get'])
     def get_queryset(self):
-        user = User.objects.select_related('purchases').all()
         return Purchase.objects.filter(**self.request.data)
-
-
+    
+        
 class BillViewSet(viewsets.ViewSet):
     @staticmethod
     def post(request):
