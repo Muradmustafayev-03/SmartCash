@@ -50,6 +50,7 @@ class ProductUnit:
     name: str
     link: str
     description: str = None
+    price: float = 0
 
     def __str__(self) -> str:
         return self.name

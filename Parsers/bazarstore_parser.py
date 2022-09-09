@@ -1,3 +1,5 @@
+import time
+
 import requests
 from bs4 import BeautifulSoup as bs
 from ML.classifiers import get_manufacturer, get_product_title
@@ -12,6 +14,14 @@ class BazarstoreParser:
 
     def get_class_head_name_as_list(self, num):
         return self.soup.find("li", {"class": f"menu-item{num}"}).find("div", {"class": "col"}).find("span").text
+
+    @staticmethod
+    def get_price_by_link(link):
+        soup = bs(requests.get(link).text, 'html.parser')
+        try:
+            return float(soup.find("span", {"class": "bs-price"}).text.replace('₼ ', ''))
+        except AttributeError:
+            return 0
 
     @staticmethod
     def get_description_by_link(link):
@@ -56,7 +66,8 @@ class BazarstoreParser:
             name = i.text
             link = i.find("a").get("href")
             description = self.get_description_by_link(link)
-            clear_titles.append(ProductUnit(name, link, description))
+            price = self.get_price_by_link(link)
+            clear_titles.append(ProductUnit(name, link, description, price))
 
         return clear_titles
 
@@ -103,13 +114,18 @@ class BazarstoreParser:
 
     def get_product_and_its_class(self):
         link_class_dict = self.get_classes_and_urls_as_dict()
-        i = 0  #
+        i = 0
         for cls, link in link_class_dict.items():
-            i += 1  #
+            i += 1
             # os.system('cls')
             print(f"{i}/492")  #
             if link:
-                self.products[cls] = self.parse_products_from_link(link)
+                for _ in range(30):
+                    try:
+                        self.products[cls] = self.parse_products_from_link(link)
+                        break
+                    except requests.exceptions.ConnectionError:
+                        time.sleep(1)
 
         return self.products
 
@@ -130,12 +146,13 @@ class BazarstoreParser:
                 if type(product) == list:
                     product = product[0]
 
-                product_title = get_title_and_quantity(product.name)[0]
+                product_title, quantity, quantity_marker = get_title_and_quantity(product.name)[0]
                 manufacturer = get_manufacturer(product_title, store)
                 product_title = get_product_title(product_title, store)
 
                 product = Product.objects.get_or_create(title=product_title, manufacturer=manufacturer,
-                                                        quantity=1, quantity_marker='', description='', price=0)[0]
+                                                        quantity=quantity, quantity_marker=quantity_marker,
+                                                        description=product.description, price=product.price)[0]
                 product.save()
                 product.categories.add(category)
 
